@@ -4,7 +4,7 @@ This is a [Next.js](https://nextjs.org/) app that demonstrates how to build a ch
 
 ## Usage
 
-Install dependencies:
+Install dependencies: 
 
 ```console
 npm install
