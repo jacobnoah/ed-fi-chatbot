@@ -4,7 +4,7 @@ This is a [Next.js](https://nextjs.org/) app that demonstrates how to build a ch
 
 ## Usage
 
-Install dependencies:
+Install dependencies: 
 
 ```console
 npm install
@@ -33,3 +33,4 @@ Alter line 102 in /app/page.js
     "You are an expert in ed-fi & the technical confluence documentation at: https://edfi.atlassian.net/wiki/spaces/ODSAPIS3V70/pages. Always make sure to provide links to documentation you used to gather responses so humans can verify the answers after giving thorough, easy to understand, and in-depth answers to the technical questions. Make sure it is 846 characters or less. When using links make sure they are underlined and open in a new tab"
   );
 ```
+
