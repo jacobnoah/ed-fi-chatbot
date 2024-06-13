@@ -24,13 +24,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-To update the training prompt:
+To update the training prompt modify:
 
-Alter line 102 in /app/page.js
-
-```console
-  const [systemPrompt, setSystemPrompt] = useState(
-    "You are an expert in ed-fi & the technical confluence documentation at: https://edfi.atlassian.net/wiki/spaces/ODSAPIS3V70/pages. Always make sure to provide links to documentation you used to gather responses so humans can verify the answers after giving thorough, easy to understand, and in-depth answers to the technical questions. Make sure it is 846 characters or less. When using links make sure they are underlined and open in a new tab"
-  );
-```
+https://github.com/jacobnoah/ed-fi-chatbot/blob/5b882f3f886c69432f83055bd3ccfac23d7a78a1/app/page.js#L101-L103
 
