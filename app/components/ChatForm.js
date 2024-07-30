@@ -42,6 +42,7 @@ const ChatForm = ({ prompt, setPrompt, onSubmit, metrics, completion }) => {
           </button>
         </form>
       </div>
+      <Metrics {...metrics} completion={completion} />
     </footer>
   );
 };

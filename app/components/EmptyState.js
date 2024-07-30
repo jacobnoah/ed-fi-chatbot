@@ -2,10 +2,10 @@ export default function EmptyState({ setOpen, setPrompt }) {
   return (
     <div className="flex gap-x-4 rounded-md bg-gray-50 py-5 px-5 mb-12">
       <span className="text-xl sm:text-2xl" title="AI">
-        <img src={"https://www.ed-fi.org/wp-content/themes/joints/assets/images/logos/logo.png"} width={75}/>
+        <img src={"/tech-doc.png"} width={75}/>
       </span>
       <div className="flex flex-col text-sm sm:text-base flex-1 gap-y-4 mt-1">
-        <p>I&apos;m an expert on the Ed-Fi ODS / API for Suite 3 v7.0.</p>
+        <p>Hi, I&apos;m the Ed-Fi Tech Doc</p>
         <p>
           I can{" "}
           <button
@@ -16,7 +16,7 @@ export default function EmptyState({ setOpen, setPrompt }) {
               )
             }
           >
-            explain the basics
+            explain the basics on getting started with Ed-Fi
           </button>
           , describe{" "}
           <button
@@ -25,7 +25,7 @@ export default function EmptyState({ setOpen, setPrompt }) {
               setPrompt("Describe the different api endpoints. ")
             }
           >
-            API Endpoints
+            the Ed-Fi API Endpoints
           </button>{" "}
           and{" "}
           <button
@@ -36,10 +36,10 @@ export default function EmptyState({ setOpen, setPrompt }) {
               )
             }
           >
-            offer best technical practices
+            offer best technical practices for implementing the Ed-Fi ODS and API
           </button>
         </p>
-        <p>What do you want to chat about?</p>
+        <p>What would you like to learn about today?</p>
       </div>
     </div>
   );

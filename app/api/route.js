@@ -29,6 +29,7 @@ export async function POST(req) {
     response = await runSalmonn(params);
   } else {
     response = await runLlama(params);
+    console.log("RESPONSE: " + response);
   }
 
   // Convert the response into a friendly text-stream

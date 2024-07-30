@@ -12,9 +12,14 @@ import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
 import { LlamaTemplate, Llama3Template } from "../src/prompt_template";
+import Image from 'next/image';
 
 import { countTokens } from "./src/tokenizer.js";
 import Link from "next/link";
+
+import { marked } from 'marked';
+import highlight from 'highlight.js';
+import 'highlight.js/styles/default.css';
 
 const MODELS = [
   {
@@ -56,6 +61,17 @@ const MODELS = [
     description: "The smallest, fastest Llama 2 chat model.",
   },
 ];
+
+marked.setOptions({
+  gfm: true,
+  breaks: true,
+  headerIds: false,
+  smartLists: true,
+  smartypants: true,
+  highlight: function(code, language) {
+    return highlight.highlightAuto(code, language).value;
+  }
+});
 
 const llamaTemplate = LlamaTemplate();
 const llama3Template = Llama3Template();
@@ -99,7 +115,7 @@ export default function HomePage() {
   //   Llama params
   const [model, setModel] = useState(MODELS[0]); // default to 70B
   const [systemPrompt, setSystemPrompt] = useState(
-    "You are an expert in ed-fi & the technical confluence documentation at: https://edfi.atlassian.net/wiki/spaces/ODSAPIS3V70/pages. Always make sure to provide links to documentation you used to gather responses so humans can verify the answers after giving thorough, easy to understand, and in-depth answers to the technical questions. Make sure it is 846 characters or less. When using links make sure they are underlined and open in a new tab"
+    "You are the leading expert on ed-fi and the technical confluence documentation. Showcase your deep understanding of the Ed-Fi ODS and API. Do NOT give overly verbose answers unless asked specific questions, and attempt to sound somewhat human in your response. Give a thorough, easy to understand, and in-depth answers to the technical questions. Make sure responses are 846 characters or less."
   );
   const [temp, setTemp] = useState(0.75);
   const [topP, setTopP] = useState(0.9);
@@ -208,14 +224,14 @@ export default function HomePage() {
     while (countTokens(prompt) > MAX_TOKENS) {
       if (messageHistory.length < 3) {
         setError(
-          "Your message is too long. Please try again with a shorter message."
+          "The message you are trying to send is too long. Please try again with a shorter message."
         );
 
         return;
       }
 
       // Remove the third message from history, keeping the original exchange.
-      messageHistory.splice(1, 2);
+      //messageHistory.splice(1, 2);
 
       // Recreate the prompt
       prompt = `${SNIP}\n${generatePrompt(
@@ -236,19 +252,37 @@ export default function HomePage() {
     if (messages?.length > 0 || completion?.length > 0) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
+      highlight.highlightAll();
+  }, [messages, completion]);
+
+  useEffect(() => {
+    // Reapply highlight.js to all code blocks
+    document.querySelectorAll('pre code').forEach((block) => {
+      highlight.highlightBlock(block);
+    });
   }, [messages, completion]);
 
   return (
     <>
-      <nav className="sm:pt-8 pt-4 px-4 sm:px-12 flex items-center">
-        <div className="text-xl pr-3 font-semibold text-blue-500 text-underline">
-          <Link href={"https://edfi.atlassian.net/wiki/spaces/ODSAPIS3V70/pages"}>Ed-Fi Technical Confluence Documentation</Link>
-        </div>
-      </nav>
+      <nav className="sm:pt-8 pt-4 px-4 sm:px-12 flex items-center justify-between pb-2 gradient-border" style={{position: "sticky", top: "0", backgroundColor: "rgba(255, 255, 255, 0.93)"}}>
+      <div>
+        <Link href={"https://www.resultant.com"}>
+          <Image src="/resultant-logo.png" alt="Resultant Logo" width="150" height="150"/>
+        </Link>
+      </div>
+      <div style={{fontFamily: 'Pacifico', color: '#004987', fontSize: "50px"}}>
+        The Ed-Fi Tech Doc
+      </div>
+      <div className="text-xl pr-3 font-semibold text-blue-500 text-underline">
+        <Link href={"https://www.ed-fi.org/"}>
+          <Image src="/edfi-logo.png" alt="Ed-Fi Logo" className="inline" width="150" height="150"/>
+        </Link>
+      </div>
+    </nav>
 
       <Toaster position="top-left" reverseOrder={false} />
 
-      <main className="max-w-2xl pb-5 mx-auto mt-8 sm:px-4">
+      <main className="max-w-5xl pb-5 mx-auto mt-8 sm:px-4">
         <div className="text-center"></div>
 
         <SlideOver
