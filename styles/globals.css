@@ -10,7 +10,6 @@ input {
     @apply border;
     @apply border-solid;
     @apply border-gray-300;
-    /* @apply rounded-md; */
     @apply px-4;
     @apply py-2;
 }
@@ -46,10 +45,10 @@ i {
     content: '';
     position: absolute;
     left: 0;
-    bottom: -10px; /* Adjust as needed */
+    bottom: -8px;
     width: 100%;
-    height: 10px; /* Adjust as needed */
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+    height: 10px;
+    background: linear-gradient(to bottom, rgba(2, 2, 2, 0.1), rgba(119, 118, 118, 0));
     z-index: -1;
   }
   
@@ -61,11 +60,11 @@ i {
   }
   
   .ball {
-    width: 20px; /* Adjust size as needed */
-    height: 20px; /* Adjust size as needed */
-    background-color: green; /* Adjust color as needed */
+    width: 20px;
+    height: 20px;
+    background-color: green;
     border-radius: 50%;
-    margin: 0 10px; /* Adjust spacing as needed */
+    margin: 0 10px;
   }
 
   span {
@@ -73,25 +72,19 @@ i {
   }
   
 .code-block {
-    /*background-color: #2e2e2e; /* Dark background for code blocks */
-    /*color: #f8f8f2; /* Light text color */
+    background-color: #2e2e2e;
     padding: 10px;
     border-radius: 4px;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    white-space: pre; /* Preserve whitespace */
-    font-family: 'Fira Code', monospace; /* Use a monospace font */
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
     border: 1px solid #ddd;
     margin-bottom: 1rem;
-    max-width: 100%; /* Ensure code blocks do not exceed the container width */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  }
-  
-  .text-block {
-    margin-bottom: 1rem;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   
   .flex {
-    overflow-x: auto; /* Handle horizontal overflow */
+    overflow-x: auto;
   }
   
   

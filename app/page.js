@@ -3,12 +3,8 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import ChatForm from "./components/ChatForm";
 import Message from "./components/Message";
-import SlideOver from "./components/SlideOver";
 import EmptyState from "./components/EmptyState";
 import QueuedSpinner from "./components/QueuedSpinner";
-import CallToAction from "./components/CallToAction";
-import Dropdown from "./components/Dropdown";
-import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
 import { LlamaTemplate, Llama3Template } from "../src/prompt_template";
@@ -19,7 +15,7 @@ import Link from "next/link";
 
 import { marked } from 'marked';
 import highlight from 'highlight.js';
-import 'highlight.js/styles/default.css';
+import 'highlight.js/styles/color-brewer.css';
 
 const MODELS = [
   {
@@ -52,7 +48,6 @@ const MODELS = [
     emoji: "🦙",
     description: "Faster and cheaper Llama 2 at the expense of accuracy.",
   },
-
   {
     id: "meta/llama-2-7b-chat",
     name: "Meta Llama 2 7B",
@@ -121,12 +116,6 @@ export default function HomePage() {
   const [topP, setTopP] = useState(0.9);
   const [maxTokens, setMaxTokens] = useState(4096);
 
-  //  Llava params
-  const [image, setImage] = useState(null);
-
-  // Salmonn params
-  const [audio, setAudio] = useState(null);
-
   const [metrics, dispatch] = useReducer(metricsReducer, {
     startedAt: null,
     firstMessageAt: null,
@@ -140,9 +129,7 @@ export default function HomePage() {
       systemPrompt: systemPrompt,
       temperature: parseFloat(temp),
       topP: parseFloat(topP),
-      maxTokens: parseInt(maxTokens),
-      image: image,
-      audio: audio,
+      maxTokens: parseInt(maxTokens)
     },
 
     onError: (error) => {
@@ -157,33 +144,6 @@ export default function HomePage() {
       dispatch({ type: "COMPLETE" });
     },
   });
-
-  const handleFileUpload = (file) => {
-    if (file) {
-      // determine if file is image or audio
-      if (
-        ["audio/mpeg", "audio/wav", "audio/ogg"].includes(
-          file.originalFile.mime
-        )
-      ) {
-        setAudio(file.fileUrl);
-        setModel(MODELS[4]);
-        toast.success(
-          "You uploaded an audio file, so you're now speaking with Salmonn."
-        );
-      } else if (["image/jpeg", "image/png"].includes(file.originalFile.mime)) {
-        setImage(file.fileUrl);
-        setModel(MODELS[3]);
-        toast.success(
-          "You uploaded an image, so you're now speaking with Llava."
-        );
-      } else {
-        toast.error(
-          `Sorry, we don't support that file type (${file.originalFile.mime}) yet. Feel free to push a PR to add support for it!`
-        );
-      }
-    }
-  };
 
   const setAndSubmitPrompt = (newPrompt) => {
     handleSubmit(newPrompt);
@@ -218,8 +178,6 @@ export default function HomePage() {
       messageHistory
     )}\n`;
 
-    console.log(prompt);
-
     // Check if we exceed max tokens and truncate the message history if so.
     while (countTokens(prompt) > MAX_TOKENS) {
       if (messageHistory.length < 3) {
@@ -251,15 +209,23 @@ export default function HomePage() {
   useEffect(() => {
     if (messages?.length > 0 || completion?.length > 0) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
-    }
       highlight.highlightAll();
-  }, [messages, completion]);
-
-  useEffect(() => {
-    // Reapply highlight.js to all code blocks
-    document.querySelectorAll('pre code').forEach((block) => {
-      highlight.highlightBlock(block);
+    }
+    
+    const observer = new MutationObserver(() => {
+      highlight.highlightAll();
     });
+
+    const messageContainer = document.querySelector('article');
+    if (messageContainer) {
+      observer.observe(messageContainer, { childList: true, subtree: true });
+    }
+
+    return () => {
+      if (messageContainer) {
+        observer.disconnect();
+      }
+    };
   }, [messages, completion]);
 
   return (
@@ -285,28 +251,10 @@ export default function HomePage() {
       <main className="max-w-5xl pb-5 mx-auto mt-8 sm:px-4">
         <div className="text-center"></div>
 
-        <SlideOver
-          open={open}
-          setOpen={setOpen}
-          systemPrompt={systemPrompt}
-          setSystemPrompt={setSystemPrompt}
-          handleSubmit={handleSettingsSubmit}
-          temp={temp}
-          setTemp={setTemp}
-          maxTokens={maxTokens}
-          setMaxTokens={setMaxTokens}
-          topP={topP}
-          setTopP={setTopP}
-          models={MODELS}
-          size={model}
-          setSize={setModel}
-        />
-
         <ChatForm
           prompt={input}
           setPrompt={setInput}
           onSubmit={handleSubmit}
-          handleFileUpload={handleFileUpload}
           completion={completion}
           metrics={metrics}
         />

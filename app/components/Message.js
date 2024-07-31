@@ -1,7 +1,7 @@
 import React from 'react';
 import { marked } from 'marked';
+import Image from 'next/image';
 
-// Configure marked to use highlight.js
 marked.setOptions({
   gfm: true,
   breaks: true,
@@ -40,7 +40,6 @@ const splitText = (text) => {
     }
   });
 
-  // Add any remaining code block lines
   if (inCodeBlock) {
     result.push(codeBlockLines.join('\n'));
   }
@@ -69,7 +68,7 @@ const Message = ({ message, isUser }) => {
         </span>
       ) : (
         <span className="text-xl sm:text-2xl" title="AI">
-          <img src={"/tech-doc.png"} width={75} alt="AI" />
+          <Image src="/tech-doc.png" width="75" height="75" alt="Tech Doc"/>
         </span>
       )}
 
