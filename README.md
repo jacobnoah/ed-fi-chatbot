@@ -8,7 +8,7 @@ This project is a [Next.js](https://nextjs.org/) application that demonstrates h
 
 - Install [Node.js](https://nodejs.org/en/download/prebuilt-installer) _*(Minimum Version : 18.17.0 to support Next JS)*_
 - Pull this repository to your local machine
-- Create a file called `.env.local1` in the project's root directory
+- Create a file called `.env.local` in the project's root directory
 
 ## Usage
 
