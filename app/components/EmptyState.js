@@ -4,7 +4,7 @@ export default function EmptyState({ setOpen, setPrompt }) {
   return (
     <div className="flex gap-x-4 rounded-md bg-gray-50 py-5 px-5 mb-12">
       <span className="text-xl sm:text-2xl" title="AI">
-        <Image src="/tech-doc.png" alt="Resultant Logo" width="75" height="75"/>
+        <Image src="/tech-doc.png" alt="Tech Doc Logo" width="75" height="75"/>
       </span>
       <div className="flex flex-col text-sm sm:text-base flex-1 gap-y-4 mt-1">
         <p>Hi, I&apos;m the Ed-Fi Tech Doc</p>

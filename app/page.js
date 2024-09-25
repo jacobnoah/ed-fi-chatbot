@@ -236,7 +236,7 @@ export default function HomePage() {
           <Image src="/resultant-logo.png" alt="Resultant Logo" width="150" height="150"/>
         </Link>
       </div>
-      <div style={{fontFamily: 'Pacifico', color: '#004987', fontSize: "50px"}}>
+      <div style={{fontFamily: 'Pacifico', color: '#0075c9', fontSize: "50px"}}>
         The Ed-Fi Tech Doc
       </div>
       <div className="text-xl pr-3 font-semibold text-blue-500 text-underline">
