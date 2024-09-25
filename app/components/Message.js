@@ -1,13 +1,54 @@
-import {marked} from "marked";
-// import remarkGfm from "remark-gfm";
-import {remark} from "remark";
-import remarkGfm from "remark-gfm";
+import React from 'react';
+import { marked } from 'marked';
+import Image from 'next/image';
+
+marked.setOptions({
+  gfm: true,
+  breaks: true,
+  headerIds: false,
+  smartLists: true,
+  smartypants: true,
+});
+
+const splitText = (text) => {
+  const result = [];
+  const lines = text.split('\n');
+  let inCodeBlock = false;
+  let codeBlockLines = [];
+
+  lines.forEach(line => {
+    if (line.startsWith('```')) {
+      if (inCodeBlock) {
+        // End of code block
+        inCodeBlock = false;
+        codeBlockLines.push(line);
+        result.push(codeBlockLines.join('\n'));
+        codeBlockLines = [];
+      } else {
+        // Start of code block
+        inCodeBlock = true;
+        codeBlockLines.push(line);
+      }
+    } else if (inCodeBlock) {
+      // Inside code block
+      codeBlockLines.push(line);
+    } else {
+      // Regular line
+      if (line.trim().length > 0) {
+        result.push(line);
+      }
+    }
+  });
+
+  if (inCodeBlock) {
+    result.push(codeBlockLines.join('\n'));
+  }
+
+  return result;
+};
 
 const Message = ({ message, isUser }) => {
-  let containerClass = "bg-gray-50";
-  if (isUser) {
-    containerClass = "bg-blue-50";
-  }
+  let containerClass = isUser ? "bg-blue-50" : "bg-gray-50";
 
   if (Array.isArray(message)) {
     message = message.join("");
@@ -27,17 +68,23 @@ const Message = ({ message, isUser }) => {
         </span>
       ) : (
         <span className="text-xl sm:text-2xl" title="AI">
-          <img src={"https://www.ed-fi.org/wp-content/themes/joints/assets/images/logos/logo.png"} width={75}/>
+          <Image src="/tech-doc.png" width="75" height="75" alt="Tech Doc"/>
         </span>
       )}
 
       <div className="flex flex-col text-sm sm:text-base flex-1 gap-y-4 mt-1">
-        {message.split("\n").map(
-          (text, index) =>
-            text.length > 0 && (
-                  <span key={index} className="min-w-0" dangerouslySetInnerHTML={{__html: marked(text)}} />
-            )
-        )}
+        {splitText(message).map((part, index) => {
+          const isCodeBlock = part.startsWith('```') && part.endsWith('```');
+          const content = marked(part);
+
+          return (
+            <div
+              key={index}
+              className={`min-w-0 ${isCodeBlock ? 'code-block' : 'text-block'}`}
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
+          );
+        })}
       </div>
     </div>
   );
