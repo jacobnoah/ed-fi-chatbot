@@ -85,7 +85,7 @@ const Message = ({ message, isUser }) => {
       });
     } catch (e) {
       console.error(e);
-      return null;
+      return "Sorry, I couldn't process your request. Please try again.";
     }
   }
 
