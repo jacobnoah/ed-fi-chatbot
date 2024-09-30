@@ -70,6 +70,25 @@ const Message = ({ message, isUser }) => {
     return null;
   }
 
+  const lines = () => {
+    try {
+      return splitText(message).map((part, index) => {
+        const isCodeBlock = part.startsWith('```') && part.endsWith('```');
+        const content = marked(part);
+        return (
+          <div
+            key={index}
+            className={`min-w-0 ${isCodeBlock ? 'code-block' : 'text-block'}`}
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+        );
+      });
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
+
   return (
     <div
       className={`flex gap-x-4 rounded-md ${containerClass} py-5 px-5 mb-12 items-center`}
@@ -85,18 +104,7 @@ const Message = ({ message, isUser }) => {
       )}
 
       <div className="flex flex-col text-sm sm:text-base flex-1 gap-y-4 mt-1">
-        {splitText(message).map((part, index) => {
-          const isCodeBlock = part.startsWith('```') && part.endsWith('```');
-          const content = marked(part);
-
-          return (
-            <div
-              key={index}
-              className={`min-w-0 ${isCodeBlock ? 'code-block' : 'text-block'}`}
-              dangerouslySetInnerHTML={{ __html: content }}
-            />
-          );
-        })}
+        {lines()}
       </div>
     </div>
   );
