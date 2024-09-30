@@ -2,6 +2,8 @@ import React from 'react';
 import { marked } from 'marked';
 import Image from 'next/image';
 
+let isErrored = false;
+
 marked.setOptions({
   gfm: true,
   breaks: true,
@@ -15,7 +17,6 @@ const splitText = (text) => {
   const lines = text.split('\n');
   let inCodeBlock = false;
   let codeBlockLines = [];
-  let isErrored = false;
 
   lines.forEach(line => {
     try {
