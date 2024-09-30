@@ -85,7 +85,11 @@ const Message = ({ message, isUser }) => {
       });
     } catch (e) {
       console.error(e);
-      return "Sorry, I couldn't process your request. Please try again.";
+      return (<div
+            key={index}
+            className={`min-w-0 text-block`}
+            dangerouslySetInnerHTML={{ __html: "<p>Sorry, I couldn't process your request. Please try again.</p>" }}
+          />)
     }
   }
 
